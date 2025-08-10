@@ -22,13 +22,13 @@ export default function RootLayout({
         <Analytics mode="auto" />
         {/* <PostHogErrorBoundary>
           <PostHogProvider> */}
-            <AuthProvider>   
-                <ProtectedRoute>
-                  <TopBar />    
-                  <main>{children}</main>
-                </ProtectedRoute>
-            </AuthProvider>
-          {/* </PostHogProvider>
+        <AuthProvider>
+          <ProtectedRoute>
+            <TopBar />
+            <main>{children}</main>
+          </ProtectedRoute>
+        </AuthProvider>
+        {/* </PostHogProvider>
         </PostHogErrorBoundary> */}
       </body>
     </html>
