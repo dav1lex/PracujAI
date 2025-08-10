@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { LoginForm } from '@/components/LoginForm';
 
 export default function LoginPage() {
-  const { user, signInWithGoogle, signInWithEmail, signUpWithEmail } = useAuth();
+  const { user, signInWithEmail, signUpWithEmail } = useAuth();
   const router = useRouter();
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -62,7 +62,6 @@ export default function LoginPage() {
         </h1> */}
         <LoginForm
           onSubmit={handleSubmit}
-          onGoogleSignIn={signInWithGoogle}
           isLoading={isLoading}
           error={error}
         />

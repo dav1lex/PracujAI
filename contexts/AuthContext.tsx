@@ -14,7 +14,6 @@ interface AuthContextType {
   session: Session | null;
   isLoading: boolean;
   supabase: SupabaseClient;
-  signInWithGoogle: () => Promise<void>;
   signInWithEmail: (email: string, password: string) => Promise<{
     user: User | null;
     session: Session | null;
@@ -140,14 +139,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     session,
     isLoading,
     supabase,
-    signInWithGoogle: async () => {
-      await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${window.location.origin}/auth/callback`
-        }
-      });
-    },
     signInWithEmail: async (email: string, password: string) => {
       const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
         email,

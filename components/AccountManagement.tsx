@@ -10,7 +10,6 @@ export function AccountManagement() {
   const [isLoading, setIsLoading] = useState(false);
 
   // Check if user signed in with OAuth
-  const isOAuthUser = user?.app_metadata?.provider === 'google';
 
   const handleDeleteAccount = async () => {
     if (!user?.id) return;
@@ -46,25 +45,15 @@ export function AccountManagement() {
       <div className="mb-6 space-y-2">
         <p><span className="font-medium">Email:</span> {user?.email}</p>
         <p><span className="font-medium">Last Sign In:</span> {new Date(user?.last_sign_in_at || '').toLocaleString()}</p>
-        <p><span className="font-medium">Account Type:</span> {isOAuthUser ? 'Google Account' : 'Email Account'}</p>
       </div>
       
       <div className="">
-        {!isOAuthUser && (
-          <button
-            onClick={() => router.push(`/reset-password?email=${encodeURIComponent(user?.email || '')}`)}
-            className="block w-full text-left px-4 py-2 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600"
-          >
-            Reset Password
-          </button>
-        )}
-
-        {/* <button
+        <button
           onClick={() => setIsDeleteModalOpen(true)}
           className="w-full text-left px-4 py-2 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-lg hover:bg-red-200 dark:hover:bg-red-900/50"
         >
           Delete Account
-        </button> */}
+        </button>
       </div>
 
       {/* Delete Account Modal */}
