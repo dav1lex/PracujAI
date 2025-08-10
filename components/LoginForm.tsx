@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { ForgotPasswordModal } from './ForgotPasswordModal';
-import Image from 'next/image';
 
 interface LoginFormProps {
   onSubmit: (email: string, password: string, isSignUp: boolean) => Promise<void>;
