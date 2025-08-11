@@ -2,7 +2,6 @@
 
 import { useAuth } from '@/contexts/AuthContext';
 import { PricingSection } from '@/components/PricingSection';
-import { useTrialStatus } from '@/hooks/useTrialStatus';
 import { TypewriterEffect } from '@/components/TypewriterEffect';
 import { POLISH_CONTENT } from '@/utils/polish-content';
 import {
@@ -14,12 +13,9 @@ import {
   Download,
   Users,
   Star,
-  CheckCircle,
   ArrowRight,
-  Play
 } from 'lucide-react';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
+import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Link as ScrollLink } from 'react-scroll';
@@ -171,18 +167,9 @@ const polishFAQ = [
 
 export default function LandingPage() {
   const { user } = useAuth();
-  const { isInTrial } = useTrialStatus();
   const [activeSection, setActiveSection] = useState("home");
 
   const router = useRouter();
-
-  const [dashboardRef, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1
-  });
-
-  const { scrollYProgress } = useScroll();
-
   const [expandedFAQ, setExpandedFAQ] = useState<number | null>(null);
 
   return (
