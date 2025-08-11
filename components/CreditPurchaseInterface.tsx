@@ -11,32 +11,79 @@ import {
   ArrowRight,
   Loader2
 } from 'lucide-react';
-import { CREDIT_PACKAGES } from '@/types/credits';
+import { CREDIT_PACKAGES, type CreditPackage } from '@/types/credits';
 import { POLISH_CONTENT, formatPolishCurrency } from '@/utils/polish-content';
+import { CreditPurchaseForm } from './CreditPurchaseForm';
+import { PaymentSuccess } from './PaymentSuccess';
 
 interface CreditPurchaseInterfaceProps {
-  onPackageSelect?: (packageId: string) => void;
-  isLoading?: boolean;
+  onPurchaseComplete?: (paymentIntentId: string, packageInfo: CreditPackage) => void;
+  onError?: (error: string) => void;
 }
 
 export function CreditPurchaseInterface({ 
-  onPackageSelect, 
-  isLoading = false 
+  onPurchaseComplete,
+  onError
 }: CreditPurchaseInterfaceProps) {
-  const [selectedPackage, setSelectedPackage] = useState<string | null>(null);
-  const [isProcessing, setIsProcessing] = useState(false);
+  const [showPaymentForm, setShowPaymentForm] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [successData, setSuccessData] = useState<{
+    paymentIntentId: string;
+    packageInfo: CreditPackage;
+  } | null>(null);
 
-  const handlePackageSelect = async (packageId: string) => {
-    setSelectedPackage(packageId);
-    if (onPackageSelect) {
-      setIsProcessing(true);
-      try {
-        await onPackageSelect(packageId);
-      } finally {
-        setIsProcessing(false);
-      }
+  const handlePaymentSuccess = (paymentIntentId: string, packageInfo: CreditPackage) => {
+    setSuccessData({ paymentIntentId, packageInfo });
+    setShowSuccess(true);
+    setShowPaymentForm(false);
+    
+    if (onPurchaseComplete) {
+      onPurchaseComplete(paymentIntentId, packageInfo);
     }
   };
+
+  const handlePaymentError = (error: string) => {
+    setShowPaymentForm(false);
+    if (onError) {
+      onError(error);
+    }
+  };
+
+  const handleSuccessClose = () => {
+    setShowSuccess(false);
+    setSuccessData(null);
+  };
+
+  // Show payment form if requested
+  if (showPaymentForm) {
+    return (
+      <div className="max-w-4xl mx-auto">
+        <CreditPurchaseForm
+          onSuccess={handlePaymentSuccess}
+          onError={handlePaymentError}
+        />
+      </div>
+    );
+  }
+
+  // Show success modal
+  if (showSuccess && successData) {
+    return (
+      <>
+        <div className="max-w-4xl mx-auto">
+          <CreditPurchaseForm
+            onSuccess={handlePaymentSuccess}
+            onError={handlePaymentError}
+          />
+        </div>
+        <PaymentSuccess
+          paymentIntentId={successData.paymentIntentId}
+          packageInfo={successData.packageInfo}
+          onClose={handleSuccessClose}
+        />
+      </>
+    );
+  }
 
   const getPackageIcon = (credits: number) => {
     if (credits >= 500) return <Zap className="h-6 w-6" />;
@@ -94,8 +141,6 @@ export function CreditPurchaseInterface({
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {CREDIT_PACKAGES.map((packageItem, index) => {
           const savings = calculateSavings(packageItem);
-          const isSelected = selectedPackage === packageItem.id;
-          const isCurrentlyProcessing = isProcessing && isSelected;
           
           return (
             <motion.div
@@ -104,13 +149,11 @@ export function CreditPurchaseInterface({
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
               className={`relative bg-white dark:bg-neutral-dark rounded-xl p-6 border-2 transition-all duration-200 cursor-pointer ${
-                isSelected
-                  ? 'border-blue-500 shadow-lg scale-105'
-                  : packageItem.popular
+                packageItem.popular
                   ? 'border-blue-200 dark:border-blue-800 shadow-md'
                   : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
               }`}
-              onClick={() => !isLoading && !isProcessing && handlePackageSelect(packageItem.id)}
+              onClick={() => setShowPaymentForm(true)}
             >
               {getPackageBadge(packageItem)}
               
@@ -176,30 +219,13 @@ export function CreditPurchaseInterface({
               {/* Select Button */}
               <button
                 className={`w-full py-3 px-4 rounded-lg font-medium transition-all duration-200 flex items-center justify-center ${
-                  isSelected
-                    ? 'bg-blue-500 text-white'
-                    : packageItem.popular
+                  packageItem.popular
                     ? 'bg-blue-500 hover:bg-blue-600 text-white'
                     : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-300'
                 }`}
-                disabled={isLoading || isProcessing}
               >
-                {isCurrentlyProcessing ? (
-                  <>
-                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    {POLISH_CONTENT.loading.processing}
-                  </>
-                ) : isSelected ? (
-                  <>
-                    <Check className="h-4 w-4 mr-2" />
-                    Wybrano
-                  </>
-                ) : (
-                  <>
-                    {POLISH_CONTENT.credits.selectPackage}
-                    <ArrowRight className="h-4 w-4 ml-2" />
-                  </>
-                )}
+                {POLISH_CONTENT.credits.selectPackage}
+                <ArrowRight className="h-4 w-4 ml-2" />
               </button>
             </motion.div>
           );

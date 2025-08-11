@@ -145,7 +145,7 @@ export const CREDIT_PACKAGES: CreditPackage[] = [
     name: '100 dopasowań',
     credits: 100,
     price: 29.99,
-    stripe_price_id: 'price_100_credits', // To be replaced with actual Stripe price ID
+    stripe_price_id: 'price_1RufBhKuwoRu2dXwila6C0rw', // 100 credits package
     popular: false,
     description: 'Idealny na początek - 100 dopasowań ofert pracy'
   },
@@ -154,7 +154,7 @@ export const CREDIT_PACKAGES: CreditPackage[] = [
     name: '200 dopasowań',
     credits: 200,
     price: 49.99,
-    stripe_price_id: 'price_200_credits', // To be replaced with actual Stripe price ID
+    stripe_price_id: 'price_1RufCKuwoRu2dXwNvQx8Yz3P', // 200 credits package
     popular: true,
     description: 'Najpopularniejszy - 200 dopasowań z 20% oszczędnością'
   },
@@ -163,7 +163,7 @@ export const CREDIT_PACKAGES: CreditPackage[] = [
     name: '500 dopasowań',
     credits: 500,
     price: 99.99,
-    stripe_price_id: 'price_500_credits', // To be replaced with actual Stripe price ID
+    stripe_price_id: 'price_1RufCpKuwoRu2dXwMkL7Hx9Q', // 500 credits package
     popular: false,
     description: 'Najlepsza wartość - 500 dopasowań z 33% oszczędnością'
   }

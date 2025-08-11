@@ -202,21 +202,83 @@ export const POST = withCors(async function POST(request: NextRequest) {
         break;
       }
 
-      // Note: You might want to add handlers for these common events:
-      // case 'invoice.paid': {
-      //   const invoice = event.data.object as Stripe.Invoice;
-      //   // Handle successful payment
-      // }
+      case 'payment_intent.succeeded': {
+        const paymentIntent = event.data.object as Stripe.PaymentIntent;
+        
+        logWebhookEvent('Processing payment_intent.succeeded', {
+          paymentIntentId: paymentIntent.id,
+          amount: paymentIntent.amount,
+          currency: paymentIntent.currency,
+          metadata: paymentIntent.metadata
+        });
 
-      // case 'invoice.payment_failed': {
-      //   const invoice = event.data.object as Stripe.Invoice;
-      //   // Handle failed payment, notify user
-      // }
+        // Extract metadata
+        const { user_id, package_id, credits } = paymentIntent.metadata;
+        
+        if (!user_id || !package_id || !credits) {
+          logWebhookEvent('Missing required metadata in payment intent', paymentIntent.metadata);
+          return NextResponse.json({ error: 'Invalid payment metadata' }, { status: 400 });
+        }
 
-      // case 'customer.subscription.trial_will_end': {
-      //   const subscription = event.data.object as Stripe.Subscription;
-      //   // Notify user about trial ending
-      // }
+        try {
+          // Add credits to user account
+          const { data: creditResult, error: creditError } = await supabaseAdmin
+            .rpc('add_credits_and_log_transaction', {
+              p_user_id: user_id,
+              p_amount: parseInt(credits),
+              p_transaction_type: 'purchase',
+              p_description: `Zakup pakietu ${package_id} - ${credits} kredytów`,
+              p_stripe_payment_intent_id: paymentIntent.id
+            });
+
+          if (creditError) {
+            logWebhookEvent('Error adding credits', creditError);
+            throw creditError;
+          }
+
+          logWebhookEvent('Successfully added credits', {
+            userId: user_id,
+            credits: credits,
+            newBalance: creditResult
+          });
+
+        } catch (error) {
+          logWebhookEvent('Failed to process payment intent', error);
+          throw error;
+        }
+        break;
+      }
+
+      case 'payment_intent.payment_failed': {
+        const paymentIntent = event.data.object as Stripe.PaymentIntent;
+        
+        logWebhookEvent('Processing payment_intent.payment_failed', {
+          paymentIntentId: paymentIntent.id,
+          lastPaymentError: paymentIntent.last_payment_error,
+          metadata: paymentIntent.metadata
+        });
+
+        // Log failed payment attempt
+        const { user_id, package_id } = paymentIntent.metadata;
+        
+        if (user_id) {
+          try {
+            await supabaseAdmin
+              .from('credit_transactions')
+              .insert({
+                user_id: user_id,
+                transaction_type: 'purchase',
+                amount: 0,
+                description: `Nieudana płatność za pakiet ${package_id}`,
+                stripe_payment_intent_id: paymentIntent.id,
+                created_at: new Date().toISOString()
+              });
+          } catch (error) {
+            logWebhookEvent('Error logging failed payment', error);
+          }
+        }
+        break;
+      }
     }
 
     return NextResponse.json({ received: true });
