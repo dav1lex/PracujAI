@@ -241,6 +241,16 @@ export const POLISH_CONTENT = {
     documentation: 'Dokumentacja',
     faq: 'FAQ',
     contactUs: 'Skontaktuj się z nami',
+    searchHelp: 'Szukaj w pomocy',
+    searchPlaceholder: 'Wpisz słowo kluczowe...',
+    noResults: 'Brak wyników wyszukiwania',
+    
+    // Main help sections
+    gettingStarted: 'Pierwsze kroki',
+    userGuide: 'Przewodnik użytkownika',
+    troubleshooting: 'Rozwiązywanie problemów',
+    faqSection: 'Często zadawane pytania',
+    videoTutorials: 'Tutoriale wideo',
     
     // Contact form
     contactForm: 'Formularz kontaktowy',
@@ -253,6 +263,11 @@ export const POLISH_CONTENT = {
     feature: 'Prośba o funkcję',
     sendMessage: 'Wyślij wiadomość',
     messageSent: 'Wiadomość została wysłana',
+    priority: 'Priorytet',
+    low: 'Niski',
+    medium: 'Średni',
+    high: 'Wysoki',
+    urgent: 'Pilny',
     
     // Installation guide
     installationGuide: 'Instrukcja instalacji',
@@ -265,22 +280,124 @@ export const POLISH_CONTENT = {
     step4: 'Krok 4: Skonfiguruj preferencje',
     step4Description: 'Ustaw swoje preferencje wyszukiwania i rozpocznij automatyczne dopasowywanie',
     
+    // Detailed user guide sections
+    accountSetup: 'Konfiguracja konta',
+    accountSetupDescription: 'Dowiedz się, jak skonfigurować swoje konto i preferencje',
+    downloadingApp: 'Pobieranie aplikacji',
+    downloadingAppDescription: 'Instrukcje pobierania i instalacji aplikacji desktopowej',
+    firstLogin: 'Pierwsze logowanie',
+    firstLoginDescription: 'Przewodnik po pierwszym logowaniu i konfiguracji',
+    settingPreferences: 'Ustawianie preferencji',
+    settingPreferencesDescription: 'Jak skonfigurować kryteria wyszukiwania ofert pracy',
+    understandingCredits: 'System kredytów',
+    understandingCreditsDescription: 'Jak działają kredyty i jak zarządzać swoim saldem',
+    buyingCredits: 'Kupowanie kredytów',
+    buyingCreditsDescription: 'Przewodnik po zakupie pakietów kredytowych',
+    managingAccount: 'Zarządzanie kontem',
+    managingAccountDescription: 'Jak edytować profil i zarządzać ustawieniami konta',
+    
     // System requirements
     systemRequirements: 'Wymagania systemowe',
     windows: 'Windows 10 lub nowszy',
     memory: 'Minimum 4 GB RAM',
     storage: 'Minimum 500 MB wolnego miejsca',
     internet: 'Połączenie internetowe',
+    dotnet: '.NET Framework 4.8 lub nowszy',
     
     // Troubleshooting
-    troubleshooting: 'Rozwiązywanie problemów',
     commonIssues: 'Najczęstsze problemy',
     appNotStarting: 'Aplikacja nie uruchamia się',
-    appNotStartingSolution: 'Sprawdź, czy masz zainstalowany .NET Framework 4.8 lub nowszy',
+    appNotStartingSolution: 'Sprawdź, czy masz zainstalowany .NET Framework 4.8 lub nowszy. Jeśli problem nadal występuje, uruchom aplikację jako administrator.',
     loginProblems: 'Problemy z logowaniem',
-    loginProblemsSolution: 'Sprawdź połączenie internetowe i upewnij się, że używasz prawidłowych danych logowania',
+    loginProblemsSolution: 'Sprawdź połączenie internetowe i upewnij się, że używasz prawidłowych danych logowania. Jeśli zapomniałeś hasła, użyj opcji "Zapomniałeś hasła?"',
     noMatches: 'Brak dopasowanych ofert',
-    noMatchesSolution: 'Sprawdź swoje kryteria wyszukiwania - mogą być zbyt restrykcyjne'
+    noMatchesSolution: 'Sprawdź swoje kryteria wyszukiwania - mogą być zbyt restrykcyjne. Spróbuj rozszerzyć zakres lokalizacji lub obniżyć wymagania dotyczące wynagrodzenia.',
+    slowPerformance: 'Aplikacja działa wolno',
+    slowPerformanceSolution: 'Zamknij inne aplikacje zużywające dużo zasobów. Sprawdź, czy masz wystarczająco wolnego miejsca na dysku.',
+    connectionErrors: 'Błędy połączenia',
+    connectionErrorsSolution: 'Sprawdź połączenie internetowe. Jeśli używasz firmowej sieci, skontaktuj się z administratorem IT.',
+    creditNotDeducted: 'Kredyty nie zostały pobrane',
+    creditNotDeductedSolution: 'Odśwież stronę lub zaloguj się ponownie. Jeśli problem nadal występuje, skontaktuj się z pomocą techniczną.',
+    
+    // FAQ Content
+    faqItems: [
+      {
+        question: 'Jak działa system dopasowywania ofert pracy?',
+        answer: 'Nasza sztuczna inteligencja analizuje Twoje preferencje zawodowe, doświadczenie i wymagania, a następnie przeszukuje oferty na Pracuj.pl, oceniając ich zgodność z Twoim profilem. Każda oferta otrzymuje ocenę dopasowania od 0 do 100%.'
+      },
+      {
+        question: 'Czy aplikacja jest bezpłatna?',
+        answer: 'Pierwsi 10 użytkowników otrzymuje 100 darmowych dopasowań. Po wykorzystaniu darmowych kredytów lub jeśli nie jesteś w pierwszej dziesiątce, możesz kupić pakiety kredytowe: 100, 200 lub 500 dopasowań.'
+      },
+      {
+        question: 'Jak często aplikacja sprawdza nowe oferty?',
+        answer: 'Aplikacja automatycznie sprawdza nowe oferty na Pracuj.pl co 30 minut, zapewniając aktualne wyniki. Możesz również ręcznie uruchomić skanowanie w dowolnym momencie.'
+      },
+      {
+        question: 'Czy mogę używać aplikacji na różnych komputerach?',
+        answer: 'Tak, po zalogowaniu przez przeglądarkę internetową możesz pobrać i używać aplikacji na dowolnym komputerze. Twoje preferencje i saldo kredytów są synchronizowane między urządzeniami.'
+      },
+      {
+        question: 'Jak mogę anulować konto?',
+        answer: 'Nie ma subskrypcji do anulowania - płacisz tylko za kredyty, których używasz. Możesz w każdej chwili przestać korzystać z aplikacji lub usunąć konto w ustawieniach profilu.'
+      },
+      {
+        question: 'Co się stanie z moimi kredytami po usunięciu konta?',
+        answer: 'Po usunięciu konta wszystkie niewykorzystane kredyty zostaną utracone. Upewnij się, że wykorzystałeś wszystkie kredyty przed usunięciem konta.'
+      },
+      {
+        question: 'Czy mogę otrzymać zwrot pieniędzy za niewykorzystane kredyty?',
+        answer: 'Kredyty nie podlegają zwrotowi, ale nie mają daty ważności. Możesz ich używać w dowolnym tempie bez ograniczeń czasowych.'
+      },
+      {
+        question: 'Jak mogę zmienić swoje preferencje wyszukiwania?',
+        answer: 'Preferencje wyszukiwania możesz zmienić w aplikacji desktopowej w sekcji "Ustawienia". Zmiany zostaną zastosowane przy następnym skanowaniu ofert.'
+      },
+      {
+        question: 'Czy aplikacja działa z innymi portalami pracy?',
+        answer: 'Obecnie aplikacja działa wyłącznie z portalem Pracuj.pl. Planujemy dodanie obsługi innych portali w przyszłych wersjach.'
+      },
+      {
+        question: 'Jak mogę skontaktować się z pomocą techniczną?',
+        answer: 'Możesz skontaktować się z nami przez formularz kontaktowy na stronie pomocy lub wysłać e-mail na adres support@pracujmatcher.pl. Odpowiadamy w ciągu 24 godzin.'
+      }
+    ],
+    
+    // Video tutorials (placeholder content)
+    videoTutorialsDescription: 'Obejrzyj nasze tutoriale wideo, aby szybko nauczyć się korzystać z PracujMatcher',
+    tutorial1Title: 'Pierwsze kroki z PracujMatcher',
+    tutorial1Description: 'Dowiedz się, jak zarejestrować konto i pobrać aplikację',
+    tutorial2Title: 'Konfiguracja preferencji wyszukiwania',
+    tutorial2Description: 'Ustaw idealne kryteria wyszukiwania ofert pracy',
+    tutorial3Title: 'Zarządzanie kredytami',
+    tutorial3Description: 'Jak kupować i zarządzać kredytami w systemie',
+    tutorial4Title: 'Rozwiązywanie problemów',
+    tutorial4Description: 'Najczęstsze problemy i sposoby ich rozwiązania',
+    comingSoon: 'Wkrótce dostępne',
+    
+    // Support ticket system
+    supportTickets: 'Zgłoszenia pomocy',
+    createTicket: 'Utwórz zgłoszenie',
+    ticketNumber: 'Numer zgłoszenia',
+    ticketStatus: 'Status',
+    ticketCreated: 'Utworzono',
+    ticketUpdated: 'Zaktualizowano',
+    open: 'Otwarte',
+    inProgress: 'W trakcie',
+    resolved: 'Rozwiązane',
+    closed: 'Zamknięte',
+    noTickets: 'Nie masz żadnych zgłoszeń',
+    viewTicket: 'Zobacz zgłoszenie',
+    
+    // Help categories
+    categories: {
+      gettingStarted: 'Pierwsze kroki',
+      installation: 'Instalacja',
+      account: 'Konto',
+      credits: 'Kredyty',
+      troubleshooting: 'Problemy',
+      billing: 'Rozliczenia'
+    }
   },
 
   // Error Messages

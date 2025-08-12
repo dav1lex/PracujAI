@@ -7,7 +7,7 @@ import { useErrorHandler } from '@/hooks/useErrorHandler';
 import { useNotifications } from '@/contexts/NotificationContext';
 import Link from 'next/link';
 import { POLISH_CONTENT } from '@/utils/polish-content';
-import { CreditCard, Download, User, Settings, LogOut, Menu, X } from 'lucide-react';
+import { CreditCard, Download, User, Settings, LogOut, Menu, X, HelpCircle } from 'lucide-react';
 
 // TopBar component handles user profile display and navigation
 export default function TopBar() {
@@ -93,6 +93,16 @@ export default function TopBar() {
               </Link>
             </>
           )}
+          <Link
+            href="/help"
+            className={`text-sm font-medium transition-colors ${
+              pathname.startsWith('/help') 
+                ? 'text-blue-600 dark:text-blue-400' 
+                : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100'
+            }`}
+          >
+            {POLISH_CONTENT.nav.help}
+          </Link>
         </nav>
 
         <div className="flex items-center gap-4">
@@ -204,6 +214,15 @@ export default function TopBar() {
                       {POLISH_CONTENT.nav.pricing}
                     </Link>
 
+                    <Link
+                      href="/help"
+                      className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                      onClick={() => setIsDropdownOpen(false)}
+                    >
+                      <HelpCircle className="h-4 w-4" />
+                      {POLISH_CONTENT.nav.help}
+                    </Link>
+
                     <hr className="my-1 border-gray-200 dark:border-gray-600" />
                     
                     <button
@@ -264,6 +283,18 @@ export default function TopBar() {
                   </Link>
                 </>
               )}
+              
+              <Link
+                href="/help"
+                className={`block px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  pathname.startsWith('/help') 
+                    ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20' 
+                    : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700'
+                }`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {POLISH_CONTENT.nav.help}
+              </Link>
 
               {!user && (
                 <>
