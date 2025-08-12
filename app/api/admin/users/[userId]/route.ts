@@ -31,14 +31,14 @@ async function verifyAdminAccess(request: NextRequest) {
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { userId: string } }
+  { params }: { params: Promise<{ userId: string }> }
 ) {
   const adminUser = await verifyAdminAccess(request);
   if (!adminUser) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const { userId } = params;
+  const { userId } = await params;
 
   try {
     // Get comprehensive user information
@@ -108,7 +108,7 @@ export async function GET(
       activeSessions: sessions.data?.filter(s => new Date(s.expires_at) > new Date()).length || 0,
       totalDownloads: downloads.data?.length || 0,
       openTickets: supportTickets.data?.filter(t => ['open', 'in_progress'].includes(t.status)).length || 0,
-      lastActivity: getLastActivity(transactions.data, sessions.data, downloads.data)
+      lastActivity: getLastActivity(transactions.data || [], sessions.data || [], downloads.data || [])
     };
 
     return NextResponse.json({
@@ -129,14 +129,14 @@ export async function GET(
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { userId: string } }
+  { params }: { params: Promise<{ userId: string }> }
 ) {
   const adminUser = await verifyAdminAccess(request);
   if (!adminUser) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const { userId } = params;
+  const { userId } = await params;
 
   try {
     const { action, ...actionData } = await request.json();

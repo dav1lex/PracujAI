@@ -22,13 +22,13 @@ interface PaymentFormProps {
 function PaymentForm({ selectedPackage, onSuccess, onError }: PaymentFormProps) {
   const stripe = useStripe();
   const elements = useElements();
-  const { user } = useAuth();
+  const { session } = useAuth();
   const [isProcessing, setIsProcessing] = useState(false);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (!stripe || !elements || !user) {
+    if (!stripe || !elements || !session) {
       onError('Błąd inicjalizacji płatności');
       return;
     }
@@ -41,7 +41,7 @@ function PaymentForm({ selectedPackage, onSuccess, onError }: PaymentFormProps) 
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${user.access_token}`
+          'Authorization': `Bearer ${session?.access_token}`
         },
         body: JSON.stringify({
           packageId: selectedPackage.id
@@ -65,7 +65,7 @@ function PaymentForm({ selectedPackage, onSuccess, onError }: PaymentFormProps) 
         payment_method: {
           card: cardElement,
           billing_details: {
-            email: user.email,
+            email: session?.user?.email,
           },
         }
       });

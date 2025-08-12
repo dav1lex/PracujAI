@@ -9,7 +9,6 @@ import {
   Zap,
   Shield,
   ArrowRight,
-  Loader2
 } from 'lucide-react';
 import { CREDIT_PACKAGES, type CreditPackage } from '@/types/credits';
 import { POLISH_CONTENT, formatPolishCurrency } from '@/utils/polish-content';

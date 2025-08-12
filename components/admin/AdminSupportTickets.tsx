@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -52,7 +52,7 @@ export function AdminSupportTickets() {
   const { session } = useAuth();
   const { showError, showSuccess } = useNotifications();
 
-  const fetchTickets = async () => {
+  const fetchTickets = useCallback(async () => {
     if (!session?.access_token) return;
 
     setIsLoading(true);
@@ -83,11 +83,11 @@ export function AdminSupportTickets() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [session?.access_token, statusFilter, currentPage, showError]);
 
   useEffect(() => {
     fetchTickets();
-  }, [statusFilter, currentPage, session, fetchTickets]);
+  }, [fetchTickets]);
 
   const handleTicketUpdate = async (ticketId: string, updates: { status?: string; response?: string; internal_notes?: string }) => {
     if (!session?.access_token) return;

@@ -19,15 +19,7 @@ interface CreditManagementDashboardProps {
 export function CreditManagementDashboard({ className = '' }: CreditManagementDashboardProps) {
   const [activeTab, setActiveTab] = useState('overview');
 
-  const handlePackageSelect = async (packageId: string) => {
-    // This would integrate with Stripe payment processing
-    console.log('Selected package:', packageId);
-    // TODO: Implement Stripe payment flow
-    // For now, just switch to history tab after "purchase"
-    setTimeout(() => {
-      setActiveTab('history');
-    }, 2000);
-  };
+
 
   return (
     <div className={`space-y-6 ${className}`}>
@@ -67,7 +59,7 @@ export function CreditManagementDashboard({ className = '' }: CreditManagementDa
         </TabsContent>
 
         <TabsContent value="purchase" className="space-y-6">
-          <CreditPurchaseInterface onPackageSelect={handlePackageSelect} />
+          <CreditPurchaseInterface />
         </TabsContent>
 
         <TabsContent value="history" className="space-y-6">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -81,7 +81,7 @@ export function AdminUserDetails({ userId, onClose }: AdminUserDetailsProps) {
   const { session } = useAuth();
   const { showError, showSuccess } = useNotifications();
 
-  const fetchUserDetails = async () => {
+  const fetchUserDetails = useCallback(async () => {
     if (!session?.access_token) return;
 
     setIsLoading(true);
@@ -104,11 +104,11 @@ export function AdminUserDetails({ userId, onClose }: AdminUserDetailsProps) {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [userId, session?.access_token, showError]);
 
   useEffect(() => {
     fetchUserDetails();
-  }, [userId, session, fetchUserDetails]);
+  }, [fetchUserDetails]);
 
   const handleUserAction = async (action: string, data?: Record<string, unknown>) => {
     if (!session?.access_token) return;

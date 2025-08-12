@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Calendar, CreditCard, Receipt, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useErrorHandler } from '@/hooks/useErrorHandler';
-import { useNotifications } from '@/contexts/NotificationContext';
+// import { useNotifications } from '@/contexts/NotificationContext';
 import { type CreditTransaction } from '@/types/credits';
 import { PaymentReceipt } from './PaymentReceipt';
 import LoadingSpinner from './LoadingSpinner';
@@ -21,9 +21,9 @@ interface PaymentHistoryResponse {
 }
 
 export function PaymentHistory() {
-    const { user, session } = useAuth();
+    const { session } = useAuth();
     const { handleApiError } = useErrorHandler();
-    const { showSuccess } = useNotifications();
+    // const {  } = useNotifications();
     const [transactions, setTransactions] = useState<CreditTransaction[]>([]);
     const [loading, setLoading] = useState(true);
     const [selectedTransaction, setSelectedTransaction] = useState<CreditTransaction | null>(null);
@@ -35,11 +35,10 @@ export function PaymentHistory() {
         totalPages: 0
     });
 
-    const fetchPaymentHistory = async (page: number = 1) => {
+    const fetchPaymentHistory = useCallback(async (page: number = 1) => {
         if (!session?.access_token) return;
 
         setLoading(true);
-
         try {
             const response = await fetch(`/api/payments/history?page=${page}&limit=10`, {
                 headers: {
@@ -62,11 +61,11 @@ export function PaymentHistory() {
         } finally {
             setLoading(false);
         }
-    };
+    }, [session?.access_token, handleApiError]);
 
     useEffect(() => {
         fetchPaymentHistory(1);
-    }, [user]);
+    }, [fetchPaymentHistory]);
 
     const formatCurrency = (amount: number) => {
         // Simplified calculation - in a real app, you'd store the actual price

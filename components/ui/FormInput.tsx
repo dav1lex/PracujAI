@@ -2,7 +2,6 @@
 
 import React, { useState, useCallback } from 'react';
 import { ValidationRule, validateField } from '@/utils/validation';
-import { POLISH_CONTENT } from '@/utils/polish-content';
 
 interface FormInputProps {
   name: string;
@@ -365,7 +364,6 @@ interface FormCheckboxProps {
   label: string;
   checked: boolean;
   onChange: (name: string, checked: boolean) => void;
-  validation?: ValidationRule;
   error?: string;
   disabled?: boolean;
   required?: boolean;
@@ -378,7 +376,6 @@ export function FormCheckbox({
   label,
   checked,
   onChange,
-  validation,
   error,
   disabled = false,
   required = false,

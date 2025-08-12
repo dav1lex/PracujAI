@@ -38,13 +38,13 @@ export function PaymentReceipt({ transaction, onClose }: PaymentReceiptProps) {
     setIsDownloading(true);
     try {
       // Generate PDF receipt (simplified - in a real app, you'd use a PDF library)
-      const receiptData = {
-        transactionId: transaction.id,
-        paymentIntentId: transaction.stripe_payment_intent_id,
-        amount: transaction.amount,
-        date: transaction.created_at,
-        description: transaction.description
-      };
+      // const receiptData = {
+      //   transactionId: transaction.id,
+      //   paymentIntentId: transaction.stripe_payment_intent_id,
+      //   amount: transaction.amount,
+      //   date: transaction.created_at,
+      //   description: transaction.description
+      // };
 
       // Create a simple text receipt for now
       const receiptText = `

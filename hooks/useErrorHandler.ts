@@ -27,16 +27,17 @@ export function useErrorHandler() {
     const polishError = parseError(error);
     
     // Add context if provided
-    if (context) {
-      polishError.context = { ...polishError.context, ...context };
-    }
+    const errorWithContext = context ? {
+      ...polishError,
+      context: { ...polishError.context, ...context }
+    } : polishError;
 
     // Log the error
-    logError(polishError);
+    logError(errorWithContext);
 
     // Show user-friendly notification
-    const userMessage = getUserErrorMessage(polishError);
-    showError(polishError, undefined, polishError.severity === 'critical' ? 0 : undefined);
+    const userMessage = getUserErrorMessage(errorWithContext);
+    showError(errorWithContext, undefined, errorWithContext.severity === 'critical' ? 0 : undefined);
 
     return polishError;
   }, [showError]);

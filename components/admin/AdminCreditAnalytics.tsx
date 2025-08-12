@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -65,7 +65,7 @@ export function AdminCreditAnalytics() {
   const { session } = useAuth();
   const { showError, showSuccess } = useNotifications();
 
-  const fetchAnalytics = async () => {
+  const fetchAnalytics = useCallback(async () => {
     if (!session?.access_token) return;
 
     setIsLoading(true);
@@ -95,11 +95,11 @@ export function AdminCreditAnalytics() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [session?.access_token, timeframe, selectedUserId, showError]);
 
   useEffect(() => {
     fetchAnalytics();
-  }, [timeframe, selectedUserId, session, fetchAnalytics]);
+  }, [fetchAnalytics]);
 
   const handleCreditAdjustment = async (e: React.FormEvent) => {
     e.preventDefault();

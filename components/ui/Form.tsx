@@ -9,9 +9,9 @@ import { POLISH_CONTENT } from '@/utils/polish-content';
 
 interface FormProps {
   children: React.ReactNode;
-  onSubmit: (data: Record<string, any>) => Promise<void> | void;
+  onSubmit: (data: Record<string, unknown>) => Promise<void> | void;
   validation?: ValidationSchema;
-  initialData?: Record<string, any>;
+  initialData?: Record<string, unknown>;
   submitText?: string;
   submitLoadingText?: string;
   successMessage?: string;
@@ -25,24 +25,22 @@ export function Form({
   onSubmit,
   validation,
   initialData = {},
-  submitText = 'Zapisz',
   submitLoadingText = POLISH_CONTENT.loading.saving,
   successMessage,
   className = '',
   disabled = false,
   showLoadingOverlay = false
 }: FormProps) {
-  const [data, setData] = useState<Record<string, any>>(initialData);
+  const [data, setData] = useState<Record<string, unknown>>(initialData);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [touched, setTouched] = useState<Record<string, boolean>>({});
 
   const { handleFormError } = useErrorHandler();
   const { showSuccess } = useNotifications();
 
-  const handleFieldChange = useCallback((name: string, value: any) => {
+  const handleFieldChange = useCallback((name: string, value: unknown) => {
     setData(prev => ({ ...prev, [name]: value }));
-    
+
     // Clear field error when user starts typing
     if (errors[name]) {
       setErrors(prev => {
@@ -54,13 +52,11 @@ export function Form({
   }, [errors]);
 
   const handleFieldBlur = useCallback((name: string) => {
-    setTouched(prev => ({ ...prev, [name]: true }));
-    
     // Validate single field on blur
     if (validation && validation[name]) {
       const fieldValidation = { [name]: validation[name] };
       const result = validateForm({ [name]: data[name] }, fieldValidation);
-      
+
       if (!result.isValid) {
         setErrors(prev => ({ ...prev, ...result.errors }));
       }
@@ -69,7 +65,7 @@ export function Form({
 
   const handleSubmit = useCallback(async (e: FormEvent) => {
     e.preventDefault();
-    
+
     if (disabled || isSubmitting) return;
 
     // Validate all fields
@@ -80,12 +76,6 @@ export function Form({
     }
 
     if (!validationResult.isValid) {
-      // Mark all fields as touched to show errors
-      const allTouched = Object.keys(validation || {}).reduce((acc, key) => {
-        acc[key] = true;
-        return acc;
-      }, {} as Record<string, boolean>);
-      setTouched(allTouched);
       return;
     }
 
@@ -93,14 +83,13 @@ export function Form({
 
     try {
       await onSubmit(data);
-      
+
       if (successMessage) {
         showSuccess(successMessage);
       }
-      
+
       // Reset form state on successful submission
       setErrors({});
-      setTouched({});
     } catch (error) {
       handleFormError(error, 'form-submission');
     } finally {
@@ -111,29 +100,31 @@ export function Form({
   // Clone children and inject form props
   const enhancedChildren = React.Children.map(children, (child) => {
     if (React.isValidElement(child)) {
+      const childProps = child.props as Record<string, unknown>;
+
       // Check if child is a form input component
-      if (child.props.name) {
-        return React.cloneElement(child as React.ReactElement<any>, {
-          value: data[child.props.name] || '',
+      if (childProps.name && typeof childProps.name === 'string') {
+        return React.cloneElement(child, {
+          value: data[childProps.name] || '',
           onChange: handleFieldChange,
           onBlur: handleFieldBlur,
-          error: errors[child.props.name],
+          error: errors[childProps.name],
           disabled: disabled || isSubmitting,
-          ...child.props
-        });
+          ...childProps
+        } as any);
       }
-      
+
       // Check if child is a submit button
-      if (child.props.type === 'submit' || child.type === LoadingButton) {
-        return React.cloneElement(child as React.ReactElement<any>, {
+      if (childProps.type === 'submit' || child.type === LoadingButton) {
+        return React.cloneElement(child, {
           loading: isSubmitting,
           disabled: disabled || isSubmitting,
           loadingText: submitLoadingText,
-          ...child.props
-        });
+          ...childProps
+        } as any);
       }
     }
-    
+
     return child;
   });
 
@@ -142,7 +133,7 @@ export function Form({
       {showLoadingOverlay && isSubmitting && (
         <FormLoadingOverlay message={submitLoadingText} />
       )}
-      
+
       <div className="space-y-4">
         {enhancedChildren}
       </div>

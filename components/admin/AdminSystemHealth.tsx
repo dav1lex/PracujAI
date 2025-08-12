@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -70,7 +70,7 @@ export function AdminSystemHealth() {
   const { session } = useAuth();
   const { showError } = useNotifications();
 
-  const fetchSystemHealth = async () => {
+  const fetchSystemHealth = useCallback(async () => {
     if (!session?.access_token) return;
 
     try {
@@ -94,7 +94,7 @@ export function AdminSystemHealth() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [session?.access_token, showError]);
 
   useEffect(() => {
     fetchSystemHealth();
@@ -102,7 +102,7 @@ export function AdminSystemHealth() {
     // Auto-refresh every 30 seconds
     const interval = setInterval(fetchSystemHealth, 30000);
     return () => clearInterval(interval);
-  }, [session, fetchSystemHealth]);
+  }, [fetchSystemHealth]);
 
   const formatUptime = (seconds: number) => {
     const days = Math.floor(seconds / 86400);
@@ -361,7 +361,7 @@ export function AdminSystemHealth() {
                 >
                   <div className="flex-1">
                     <p className="font-medium">
-                      {activity.users?.email || `Użytkownik ${activity.user_id.slice(0, 8)}...`}
+                      {activity.users?.email || `Użytkownik ${activity.id.slice(0, 8)}...`}
                     </p>
                     <p className="text-muted-foreground text-xs">{activity.description}</p>
                   </div>

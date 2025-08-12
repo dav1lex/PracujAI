@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -51,7 +51,7 @@ export function AdminUserManagement() {
   const { session } = useAuth();
   const { showError } = useNotifications();
 
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     if (!session?.access_token) return;
 
     setIsLoading(true);
@@ -84,11 +84,11 @@ export function AdminUserManagement() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [currentPage, searchTerm, sortBy, sortOrder, session?.access_token, showError]);
 
   useEffect(() => {
     fetchUsers();
-  }, [currentPage, searchTerm, sortBy, sortOrder, session, fetchUsers]);
+  }, [fetchUsers]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
