@@ -7,7 +7,6 @@ import {
   CreditCard,
   TrendingUp,
   Gift,
-  ShoppingCart,
   BarChart3,
   AlertCircle,
   CheckCircle,

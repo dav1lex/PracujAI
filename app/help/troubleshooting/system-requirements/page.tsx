@@ -405,11 +405,11 @@ export default function SystemRequirementsPage() {
               </li>
               <li className="flex items-start gap-2">
                 <span className="font-medium text-primary dark:text-primary-light">2.</span>
-                Wpisz "msinfo32" i naciśnij Enter
+                Wpisz &quot;msinfo32&quot; i naciśnij Enter
               </li>
               <li className="flex items-start gap-2">
                 <span className="font-medium text-primary dark:text-primary-light">3.</span>
-                Sprawdź "Nazwa systemu operacyjnego" i "Całkowita pamięć fizyczna"
+                Sprawdź &quot;Nazwa systemu operacyjnego&quot; i &quot;Całkowita pamięć fizyczna&quot;
               </li>
             </ol>
           </div>

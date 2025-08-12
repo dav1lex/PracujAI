@@ -111,6 +111,7 @@ export function Form({
           error: errors[childProps.name],
           disabled: disabled || isSubmitting,
           ...childProps
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } as any);
       }
 
@@ -121,6 +122,7 @@ export function Form({
           disabled: disabled || isSubmitting,
           loadingText: submitLoadingText,
           ...childProps
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } as any);
       }
     }

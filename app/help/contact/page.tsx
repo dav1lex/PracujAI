@@ -38,7 +38,7 @@ const priorities = [
 ];
 
 export default function ContactPage() {
-  const { user } = useAuth();
+  const { user, session } = useAuth();
   const [formData, setFormData] = useState<ContactFormData>({
     subject: '',
     message: '',
@@ -67,7 +67,7 @@ export default function ContactPage() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${user?.access_token}`
+          'Authorization': `Bearer ${session?.access_token}`
         },
         body: JSON.stringify(formData)
       });
@@ -77,7 +77,7 @@ export default function ContactPage() {
       }
 
       setIsSubmitted(true);
-    } catch (err) {
+    } catch {
       setError('Wystąpił błąd podczas wysyłania wiadomości. Spróbuj ponownie.');
     } finally {
       setIsSubmitting(false);

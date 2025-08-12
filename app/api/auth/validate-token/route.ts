@@ -16,7 +16,7 @@ function getClientIP(request: NextRequest): string {
     return realIP;
   }
   
-  return request.ip || 'unknown';
+  return request.headers.get('x-forwarded-for') || 'unknown';
 }
 
 export async function POST(request: NextRequest) {

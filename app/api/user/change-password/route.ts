@@ -1,7 +1,7 @@
 import { NextRequest } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { createSecureAPIRoute, createSuccessResponse, createErrorResponse } from '@/utils/api-security';
-import { securitySchemas } from '@/utils/security';
+
 import { POLISH_CONTENT } from '@/utils/polish-content';
 
 const supabase = createClient(

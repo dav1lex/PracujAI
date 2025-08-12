@@ -15,7 +15,6 @@ import {
   ChevronRight,
   ExternalLink,
   Mail,
-  Phone,
   Clock,
   CheckCircle
 } from 'lucide-react';

@@ -8,7 +8,6 @@ import {
   Download,
   Monitor,
   CheckCircle,
-  AlertCircle,
   Shield,
   FileText,
   ChevronRight

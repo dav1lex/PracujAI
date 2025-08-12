@@ -1,9 +1,19 @@
 import { NextRequest } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { createSecureAPIRoute, createSuccessResponse, createErrorResponse } from '@/utils/api-security';
-import { AuditLogger } from '@/utils/audit-logger';
-import { SystemMonitor } from '@/utils/system-monitor';
+import { AuditLogger, AuditEventType, RiskLevel } from '@/utils/audit-logger';
+import { SystemMonitor, MetricType } from '@/utils/system-monitor';
 import { BackupSystem } from '@/utils/backup-system';
+
+// Type definitions for monitoring data
+interface MonitoringData {
+  [key: string]: unknown;
+}
+
+type EventType = AuditEventType | undefined;
+type RiskLevelType = RiskLevel | undefined;
+type Severity = 'low' | 'medium' | 'high' | 'critical' | undefined;
+type MetricTypeParam = MetricType | undefined;
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -31,7 +41,7 @@ export const GET = createSecureAPIRoute(
       const { searchParams } = new URL(request.url);
       const type = searchParams.get('type') || 'overview';
 
-      let data: any = {};
+      let data: MonitoringData = {};
 
       switch (type) {
         case 'overview':
@@ -60,8 +70,8 @@ export const GET = createSecureAPIRoute(
           const endDate = searchParams.get('end_date') || undefined;
 
           const auditLogs = await AuditLogger.getLogs({
-            eventType: eventType as any,
-            riskLevel: riskLevel as any,
+            eventType: eventType as EventType,
+            riskLevel: riskLevel as RiskLevelType,
             startDate,
             endDate,
             limit,
@@ -83,7 +93,7 @@ export const GET = createSecureAPIRoute(
                           searchParams.get('resolved') === 'false' ? false : undefined;
 
           const securityAlerts = await AuditLogger.getSecurityAlerts({
-            severity: severity as any,
+            severity: severity as Severity,
             resolved,
             limit: alertLimit
           });
@@ -103,7 +113,7 @@ export const GET = createSecureAPIRoute(
 
           const metrics = await SystemMonitor.getMetrics({
             metricName: metricName || undefined,
-            metricType: metricType as any,
+            metricType: metricType as MetricTypeParam,
             startDate: metricsStartDate || undefined,
             endDate: metricsEndDate || undefined,
             limit: metricsLimit
@@ -170,7 +180,7 @@ export const POST = createSecureAPIRoute(
 
       const { action, ...params } = context.validatedData!;
 
-      let result: any = {};
+      let result: MonitoringData = {};
 
       switch (action) {
         case 'create_backup':

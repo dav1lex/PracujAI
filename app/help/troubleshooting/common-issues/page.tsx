@@ -304,7 +304,7 @@ export default function CommonIssuesPage() {
             Kategorie problemów
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {categories.map((category, index) => (
+            {categories.map((category) => (
               <button
                 key={category}
                 onClick={() => {
